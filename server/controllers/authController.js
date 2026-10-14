@@ -54,35 +54,93 @@ async function register(req, res) {
 
     const userLocality = locality && locality.trim() ? locality.trim() : 'Andheri West, Mumbai';
 
-    // 4. Insert new Customer user
+    const registrationRole = req.body.role === 'provider' ? 'provider' : 'customer';
+    const { service_category, experience_years, description } = req.body;
+
+    if (registrationRole === 'provider' && !service_category) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please select your service category (Electrician, Plumber, or AC Repair).',
+      });
+    }
+
+    // 4. Insert new user
     const result = await db.query(
       'INSERT INTO users (full_name, email, password_hash, phone, role, locality) VALUES (?, ?, ?, ?, ?, ?)',
-      [full_name.trim(), email.trim().toLowerCase(), passwordHash, phone.trim(), 'customer', userLocality]
+      [full_name.trim(), email.trim().toLowerCase(), passwordHash, phone.trim(), registrationRole, userLocality]
     );
 
     const userId = result.insertId || result[0]?.insertId;
+    let providerProfile = null;
+
+    // 5. If provider, create matching provider profile
+    if (registrationRole === 'provider') {
+      const catRows = await db.query('SELECT id FROM categories WHERE name = ?', [service_category]);
+      const categoryId = catRows && catRows.length > 0
+        ? catRows[0].id
+        : (service_category === 'Plumber' ? 2 : service_category === 'AC Repair' ? 3 : 1);
+
+      const provResult = await db.query(
+        'INSERT INTO providers (user_id, category_id, name, service_category, locality, city, experience_years, description, availability_status, is_active, demo_phone, demo_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          userId,
+          categoryId,
+          full_name.trim(),
+          service_category,
+          userLocality,
+          'Mumbai, Maharashtra',
+          parseInt(experience_years, 10) || 2,
+          description ? description.trim() : `${service_category} installation and repair services.`,
+          'Available',
+          1,
+          phone.trim(),
+          email.trim().toLowerCase(),
+        ]
+      );
+
+      const provId = provResult.insertId || provResult[0]?.insertId;
+      providerProfile = {
+        id: provId,
+        user_id: userId,
+        category_id: categoryId,
+        name: full_name.trim(),
+        service_category,
+        locality: userLocality,
+        city: 'Mumbai, Maharashtra',
+        experience_years: parseInt(experience_years, 10) || 2,
+        description: description ? description.trim() : `${service_category} installation and repair services.`,
+        availability_status: 'Available',
+        is_active: 1,
+        demo_phone: phone.trim(),
+        demo_email: email.trim().toLowerCase(),
+      };
+    }
 
     const payload = {
       id: userId,
       full_name: full_name.trim(),
       email: email.trim().toLowerCase(),
-      role: 'customer',
+      role: registrationRole,
       locality: userLocality,
+      provider_id: providerProfile ? providerProfile.id : null,
     };
 
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 
     return res.status(201).json({
       success: true,
-      message: 'Registration successful! Welcome to NearFix.',
+      message: registrationRole === 'provider'
+        ? 'Service Provider account created successfully! Welcome to NearFix.'
+        : 'Registration successful! Welcome to NearFix.',
       token,
       user: {
         id: userId,
         full_name: full_name.trim(),
         email: email.trim().toLowerCase(),
         phone: phone.trim(),
-        role: 'customer',
+        role: registrationRole,
         locality: userLocality,
+        providerProfile,
       },
     });
   } catch (err) {

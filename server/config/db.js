@@ -199,7 +199,10 @@ function handleMemoryQuery(sql, params) {
   // Users
   if (cleanSql.startsWith('SELECT * FROM USERS WHERE EMAIL = ?')) {
     const email = params[0];
-    const user = memoryStore.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const normalized = email.toLowerCase().replace('@demo.', '@');
+    const user = memoryStore.users.find(
+      (u) => u.email.toLowerCase() === email.toLowerCase() || u.email.toLowerCase().replace('@demo.', '@') === normalized
+    );
     return user ? [user] : [];
   }
   if (cleanSql.startsWith('SELECT * FROM USERS WHERE ID = ?')) {
@@ -267,6 +270,25 @@ function handleMemoryQuery(sql, params) {
     const provider = memoryStore.providers.find((p) => p.id === Number(id));
     if (provider) provider.availability_status = status;
     return { affectedRows: provider ? 1 : 0 };
+  }
+  if (cleanSql.startsWith('INSERT INTO PROVIDERS')) {
+    const newProvider = {
+      id: memoryStore.providers.length + 1,
+      user_id: Number(params[0]),
+      category_id: Number(params[1]),
+      name: params[2],
+      service_category: params[3],
+      locality: params[4],
+      city: params[5] || 'Mumbai, Maharashtra',
+      experience_years: Number(params[6]) || 1,
+      description: params[7],
+      availability_status: params[8] || 'Available',
+      is_active: params[9] !== undefined ? params[9] : 1,
+      demo_phone: params[10],
+      demo_email: params[11],
+    };
+    memoryStore.providers.push(newProvider);
+    return { insertId: newProvider.id };
   }
   if (cleanSql.startsWith('UPDATE PROVIDERS SET IS_ACTIVE = ? WHERE ID = ?')) {
     const [isActive, id] = params;

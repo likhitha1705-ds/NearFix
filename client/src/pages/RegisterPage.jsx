@@ -7,11 +7,16 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  const [role, setRole] = useState('customer'); // 'customer' or 'provider'
+
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
     phone: '',
     locality: 'Andheri West, Mumbai',
+    service_category: 'Electrician',
+    experience_years: '3',
+    description: '',
     password: '',
     confirm_password: '',
   });
@@ -28,8 +33,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    // Validation
-    const { full_name, email, phone, locality, password, confirm_password } = formData;
+    const { full_name, email, phone, locality, password, confirm_password, service_category, experience_years, description } = formData;
 
     if (!full_name.trim() || !email.trim() || !phone.trim() || !password || !confirm_password) {
       setError('Please fill in all required fields.');
@@ -52,20 +56,33 @@ export default function RegisterPage() {
       return;
     }
 
+    if (role === 'provider' && !description.trim()) {
+      setError('Please enter a brief description of your repair services.');
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await api.auth.register({
+        role,
         full_name: full_name.trim(),
         email: email.trim(),
         phone: phone.trim(),
         locality: locality.trim(),
+        service_category: role === 'provider' ? service_category : undefined,
+        experience_years: role === 'provider' ? experience_years : undefined,
+        description: role === 'provider' ? description.trim() : undefined,
         password,
         confirm_password,
       });
 
       if (res.success && res.token && res.user) {
         login(res.token, res.user);
-        navigate('/customer-dashboard');
+        if (res.user.role === 'provider') {
+          navigate('/provider-dashboard');
+        } else {
+          navigate('/customer-dashboard');
+        }
       } else {
         setError(res.message || 'Registration failed.');
       }
@@ -81,9 +98,37 @@ export default function RegisterPage() {
       <div className="container">
         <div className="auth-card card">
           <div className="auth-header">
-            <div className="auth-icon">📝</div>
-            <h2>Customer Registration</h2>
-            <p className="auth-subtitle">Create an account to book household repair services in Mumbai.</p>
+            <div className="auth-icon">{role === 'provider' ? '🛠️' : '📝'}</div>
+            <h2>{role === 'provider' ? 'Service Provider Registration' : 'Customer Registration'}</h2>
+            <p className="auth-subtitle">
+              {role === 'provider'
+                ? 'Join NearFix to offer your professional repair services.'
+                : 'Create an account to book household repair services.'}
+            </p>
+          </div>
+
+          {/* Role Switcher Tabs */}
+          <div className="role-switcher">
+            <button
+              type="button"
+              className={`switcher-tab ${role === 'customer' ? 'active' : ''}`}
+              onClick={() => {
+                setRole('customer');
+                setError('');
+              }}
+            >
+              👤 Customer Account
+            </button>
+            <button
+              type="button"
+              className={`switcher-tab ${role === 'provider' ? 'active' : ''}`}
+              onClick={() => {
+                setRole('provider');
+                setError('');
+              }}
+            >
+              ⚡ Service Provider
+            </button>
           </div>
 
           {error && <div className="alert alert-error">{error}</div>}
@@ -92,14 +137,14 @@ export default function RegisterPage() {
             {/* Full Name */}
             <div className="form-group">
               <label htmlFor="reg-name" className="form-label">
-                Full Name
+                {role === 'provider' ? 'Provider / Business Name' : 'Full Name'}
               </label>
               <input
                 id="reg-name"
                 name="full_name"
                 type="text"
                 className="form-input"
-                placeholder="e.g. Rohan Mehta"
+                placeholder={role === 'provider' ? 'e.g. Ramesh Kumar' : 'e.g. Rohan Mehta'}
                 value={formData.full_name}
                 onChange={handleChange}
                 required
@@ -140,10 +185,31 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Mumbai Locality */}
+            {/* If Service Provider: Service Category */}
+            {role === 'provider' && (
+              <div className="form-group">
+                <label htmlFor="reg-service" className="form-label">
+                  Service Category
+                </label>
+                <select
+                  id="reg-service"
+                  name="service_category"
+                  className="form-select"
+                  value={formData.service_category}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="Electrician">Electrician (Electrical repairs)</option>
+                  <option value="Plumber">Plumber (Water & pipes)</option>
+                  <option value="AC Repair">AC Repair (Cooling & servicing)</option>
+                </select>
+              </div>
+            )}
+
+            {/* Locality */}
             <div className="form-group">
               <label htmlFor="reg-locality" className="form-label">
-                Mumbai Locality / Area
+                {role === 'provider' ? 'Primary Service Area / Locality' : 'Locality / Area'}
               </label>
               <select
                 id="reg-locality"
@@ -162,6 +228,44 @@ export default function RegisterPage() {
                 <option value="Malad West, Mumbai">Malad West, Mumbai</option>
               </select>
             </div>
+
+            {/* If Service Provider: Experience & Description */}
+            {role === 'provider' && (
+              <>
+                <div className="form-group">
+                  <label htmlFor="reg-experience" className="form-label">
+                    Years of Experience
+                  </label>
+                  <input
+                    id="reg-experience"
+                    name="experience_years"
+                    type="number"
+                    min="1"
+                    max="40"
+                    className="form-input"
+                    placeholder="e.g. 5"
+                    value={formData.experience_years}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="reg-desc" className="form-label">
+                    Professional Description / Specialization
+                  </label>
+                  <textarea
+                    id="reg-desc"
+                    name="description"
+                    className="form-textarea"
+                    placeholder="Describe your repair experience, tools, and typical household repair jobs..."
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                  ></textarea>
+                </div>
+              </>
+            )}
 
             {/* Password */}
             <div className="form-group">
@@ -198,13 +302,17 @@ export default function RegisterPage() {
             </div>
 
             <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-              {loading ? 'Creating Account...' : 'Register Customer Account'}
+              {loading
+                ? 'Creating Account...'
+                : role === 'provider'
+                ? 'Register as Service Provider'
+                : 'Register Customer Account'}
             </button>
           </form>
 
           <div className="auth-footer">
             <p>
-              Already registered?{' '}
+              Already have an account?{' '}
               <Link to="/login" className="auth-link">
                 Sign In to NearFix
               </Link>
@@ -215,18 +323,18 @@ export default function RegisterPage() {
 
       <style>{`
         .register-page {
-          padding: 50px 0 80px;
+          padding: 40px 0 80px;
         }
 
         .auth-card {
-          max-width: 500px;
+          max-width: 520px;
           margin: 0 auto;
-          padding: 36px;
+          padding: 34px;
         }
 
         .auth-header {
           text-align: center;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
 
         .auth-icon {
@@ -243,6 +351,34 @@ export default function RegisterPage() {
           font-size: 0.92rem;
           color: var(--text-muted);
           margin-bottom: 0;
+        }
+
+        .role-switcher {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 24px;
+          background-color: #f1f5f9;
+          padding: 4px;
+          border-radius: var(--radius-md);
+        }
+
+        .switcher-tab {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          background: transparent;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: var(--text-muted);
+          border-radius: var(--radius-sm);
+          cursor: pointer;
+          transition: var(--transition);
+        }
+
+        .switcher-tab.active {
+          background-color: #ffffff;
+          color: var(--primary-teal);
+          box-shadow: var(--shadow-sm);
         }
 
         .auth-form {
