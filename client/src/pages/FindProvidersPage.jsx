@@ -16,6 +16,7 @@ export default function FindProvidersPage() {
 
   // Fallback 3 fictional demo providers in case server is starting
   const defaultProviders = [
+    // 3 Electricians
     {
       id: 1,
       name: 'Rahul Sharma',
@@ -29,6 +30,30 @@ export default function FindProvidersPage() {
     },
     {
       id: 2,
+      name: 'Kiran Verma',
+      service_category: 'Electrician',
+      locality: 'Bandra West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 5,
+      description: 'Residential and commercial wiring diagnostics, MCB replacement, and fixture setups.',
+      availability_status: 'Available',
+      category_icon: '⚡',
+    },
+    {
+      id: 3,
+      name: 'Sanjay Rao',
+      service_category: 'Electrician',
+      locality: 'Dadar, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 4,
+      description: 'Home inverter installations, circuit breaker troubleshooting, and lighting maintenance.',
+      availability_status: 'Available',
+      category_icon: '⚡',
+    },
+
+    // 3 Plumbers
+    {
+      id: 4,
       name: 'Amit Patil',
       service_category: 'Plumber',
       locality: 'Dadar, Mumbai',
@@ -39,13 +64,59 @@ export default function FindProvidersPage() {
       category_icon: '🔧',
     },
     {
-      id: 3,
+      id: 5,
+      name: 'Ganesh Shinde',
+      service_category: 'Plumber',
+      locality: 'Andheri West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 6,
+      description: 'Bathroom fittings, pipeline leakage inspection, and water pressure motor maintenance.',
+      availability_status: 'Available',
+      category_icon: '🔧',
+    },
+    {
+      id: 6,
+      name: 'Prashant More',
+      service_category: 'Plumber',
+      locality: 'Bandra West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 3,
+      description: 'Kitchen sink drainage unclogging, geyser pipeline connections, and valve repairs.',
+      availability_status: 'Available',
+      category_icon: '🔧',
+    },
+
+    // 3 AC Repairs
+    {
+      id: 7,
       name: 'Neha Deshmukh',
       service_category: 'AC Repair',
       locality: 'Bandra West, Mumbai',
       city: 'Mumbai, Maharashtra',
       experience_years: 3,
       description: 'AC cleaning, routine servicing, and basic cooling issue checks.',
+      availability_status: 'Available',
+      category_icon: '❄️',
+    },
+    {
+      id: 8,
+      name: 'Sameer Khan',
+      service_category: 'AC Repair',
+      locality: 'Andheri West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 5,
+      description: 'Split and window AC gas refilling, compressor diagnostics, and filter sanitization.',
+      availability_status: 'Available',
+      category_icon: '❄️',
+    },
+    {
+      id: 9,
+      name: 'Vikram Joshi',
+      service_category: 'AC Repair',
+      locality: 'Dadar, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 4,
+      description: 'Copper piping repair, PCB board troubleshooting, and seasonal preventive maintenance.',
       availability_status: 'Available',
       category_icon: '❄️',
     },

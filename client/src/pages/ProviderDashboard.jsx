@@ -11,9 +11,10 @@ export default function ProviderDashboard() {
   const [statusMessage, setStatusMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Fallback demo profile matching the provider account
+  // Fallback demo profiles matching provider accounts
   const fallbackProfiles = {
-    'rahul.sharma@demo.nearfix.in': {
+    // Electricians
+    'rahul.sharma@nearfix.in': {
       id: 1,
       name: 'Rahul Sharma',
       service_category: 'Electrician',
@@ -26,8 +27,36 @@ export default function ProviderDashboard() {
       demo_email: 'rahul.sharma@nearfix.in',
       category_icon: '⚡',
     },
-    'amit.patil@demo.nearfix.in': {
+    'kiran.verma@nearfix.in': {
       id: 2,
+      name: 'Kiran Verma',
+      service_category: 'Electrician',
+      locality: 'Bandra West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 5,
+      description: 'Residential and commercial wiring diagnostics, MCB replacement, and fixture setups.',
+      availability_status: 'Available',
+      demo_phone: '+91 98200 11002',
+      demo_email: 'kiran.verma@nearfix.in',
+      category_icon: '⚡',
+    },
+    'sanjay.rao@nearfix.in': {
+      id: 3,
+      name: 'Sanjay Rao',
+      service_category: 'Electrician',
+      locality: 'Dadar, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 4,
+      description: 'Home inverter installations, circuit breaker troubleshooting, and lighting maintenance.',
+      availability_status: 'Available',
+      demo_phone: '+91 98200 11003',
+      demo_email: 'sanjay.rao@nearfix.in',
+      category_icon: '⚡',
+    },
+
+    // Plumbers
+    'amit.patil@nearfix.in': {
+      id: 4,
       name: 'Amit Patil',
       service_category: 'Plumber',
       locality: 'Dadar, Mumbai',
@@ -35,12 +64,40 @@ export default function ProviderDashboard() {
       experience_years: 4,
       description: 'Tap repairs, water leakage, and basic pipe maintenance.',
       availability_status: 'Available',
-      demo_phone: '+91 98200 22002',
+      demo_phone: '+91 98200 22001',
       demo_email: 'amit.patil@nearfix.in',
       category_icon: '🔧',
     },
-    'neha.deshmukh@demo.nearfix.in': {
-      id: 3,
+    'ganesh.shinde@nearfix.in': {
+      id: 5,
+      name: 'Ganesh Shinde',
+      service_category: 'Plumber',
+      locality: 'Andheri West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 6,
+      description: 'Bathroom fittings, pipeline leakage inspection, and water pressure motor maintenance.',
+      availability_status: 'Available',
+      demo_phone: '+91 98200 22002',
+      demo_email: 'ganesh.shinde@nearfix.in',
+      category_icon: '🔧',
+    },
+    'prashant.more@nearfix.in': {
+      id: 6,
+      name: 'Prashant More',
+      service_category: 'Plumber',
+      locality: 'Bandra West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 3,
+      description: 'Kitchen sink drainage unclogging, geyser pipeline connections, and valve repairs.',
+      availability_status: 'Available',
+      demo_phone: '+91 98200 22003',
+      demo_email: 'prashant.more@nearfix.in',
+      category_icon: '🔧',
+    },
+
+    // AC Repairs
+    'neha.deshmukh@nearfix.in': {
+      id: 7,
       name: 'Neha Deshmukh',
       service_category: 'AC Repair',
       locality: 'Bandra West, Mumbai',
@@ -48,8 +105,34 @@ export default function ProviderDashboard() {
       experience_years: 3,
       description: 'AC cleaning, routine servicing, and basic cooling issue checks.',
       availability_status: 'Available',
-      demo_phone: '+91 98200 33003',
+      demo_phone: '+91 98200 33001',
       demo_email: 'neha.deshmukh@nearfix.in',
+      category_icon: '❄️',
+    },
+    'sameer.khan@nearfix.in': {
+      id: 8,
+      name: 'Sameer Khan',
+      service_category: 'AC Repair',
+      locality: 'Andheri West, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 5,
+      description: 'Split and window AC gas refilling, compressor diagnostics, and filter sanitization.',
+      availability_status: 'Available',
+      demo_phone: '+91 98200 33002',
+      demo_email: 'sameer.khan@nearfix.in',
+      category_icon: '❄️',
+    },
+    'vikram.joshi@nearfix.in': {
+      id: 9,
+      name: 'Vikram Joshi',
+      service_category: 'AC Repair',
+      locality: 'Dadar, Mumbai',
+      city: 'Mumbai, Maharashtra',
+      experience_years: 4,
+      description: 'Copper piping repair, PCB board troubleshooting, and seasonal preventive maintenance.',
+      availability_status: 'Available',
+      demo_phone: '+91 98200 33003',
+      demo_email: 'vikram.joshi@nearfix.in',
       category_icon: '❄️',
     },
   };
