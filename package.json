@@ -1,0 +1,23 @@
+{
+  "name": "nearfix",
+  "version": "1.0.0",
+  "description": "NearFix – Local Service Finder for Mumbai (College Mini-Project)",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "init-db": "cd server && npm run init-db"
+  },
+  "keywords": [
+    "nearfix",
+    "mumbai",
+    "local-service-finder",
+    "react",
+    "nodejs",
+    "express",
+    "mysql"
+  ],
+  "author": "NearFix Project Team",
+  "license": "ISC"
+}
