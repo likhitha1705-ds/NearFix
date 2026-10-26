@@ -129,7 +129,7 @@ export default function FindProvidersPage() {
       try {
         const res = await api.providers.getAll({
           service: serviceFilter,
-          locality: localityFilter,
+          locality: localityFilter === 'All' ? '' : localityFilter.trim(),
         });
         if (res.success && res.providers) {
           setProviders(res.providers);
@@ -152,9 +152,9 @@ export default function FindProvidersPage() {
           (p) => p.service_category.toLowerCase() === serviceFilter.toLowerCase()
         );
       }
-      if (localityFilter && localityFilter !== 'All') {
+      if (localityFilter && localityFilter !== 'All' && localityFilter.trim() !== '') {
         filtered = filtered.filter((p) =>
-          p.locality.toLowerCase().includes(localityFilter.toLowerCase())
+          p.locality.toLowerCase().includes(localityFilter.toLowerCase().trim())
         );
       }
       setProviders(filtered);
@@ -164,14 +164,16 @@ export default function FindProvidersPage() {
 
     // Update query params in URL
     const nextParams = new URLSearchParams();
-    if (serviceFilter !== 'All') nextParams.set('service', serviceFilter);
-    if (localityFilter !== 'All') nextParams.set('locality', localityFilter);
+    if (serviceFilter && serviceFilter !== 'All') nextParams.set('service', serviceFilter);
+    if (localityFilter && localityFilter !== 'All' && localityFilter.trim() !== '') {
+      nextParams.set('locality', localityFilter.trim());
+    }
     setSearchParams(nextParams);
   }, [serviceFilter, localityFilter]);
 
   const handleResetFilters = () => {
     setServiceFilter('All');
-    setLocalityFilter('All');
+    setLocalityFilter('');
   };
 
   return (
@@ -211,17 +213,14 @@ export default function FindProvidersPage() {
               <label htmlFor="locality-filter" className="form-label">
                 Filter by Locality
               </label>
-              <select
+              <input
                 id="locality-filter"
-                className="form-select"
-                value={localityFilter}
+                type="text"
+                className="form-input"
+                placeholder="Type any area or locality (or leave blank)..."
+                value={localityFilter === 'All' ? '' : localityFilter}
                 onChange={(e) => setLocalityFilter(e.target.value)}
-              >
-                <option value="All">All Localities</option>
-                <option value="Andheri West">Andheri West</option>
-                <option value="Dadar">Dadar</option>
-                <option value="Bandra West">Bandra West</option>
-              </select>
+              />
             </div>
 
             {/* Clear Filters Button */}

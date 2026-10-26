@@ -13,7 +13,7 @@ export default function RegisterPage() {
     full_name: '',
     email: '',
     phone: '',
-    locality: 'Andheri West, Mumbai',
+    locality: '',
     service_category: 'Electrician',
     experience_years: '3',
     description: '',
@@ -35,8 +35,8 @@ export default function RegisterPage() {
 
     const { full_name, email, phone, locality, password, confirm_password, service_category, experience_years, description } = formData;
 
-    if (!full_name.trim() || !email.trim() || !phone.trim() || !password || !confirm_password) {
-      setError('Please fill in all required fields.');
+    if (!full_name.trim() || !email.trim() || !phone.trim() || !locality.trim() || !password || !confirm_password) {
+      setError('Please fill in all required fields, including your address/locality.');
       return;
     }
 
@@ -206,27 +206,21 @@ export default function RegisterPage() {
               </div>
             )}
 
-            {/* Locality */}
+            {/* Address / Locality - Free text input, no options */}
             <div className="form-group">
               <label htmlFor="reg-locality" className="form-label">
-                {role === 'provider' ? 'Primary Service Area / Locality' : 'Locality / Area'}
+                {role === 'provider' ? 'Primary Service Area / Address' : 'Address / Locality'}
               </label>
-              <select
+              <input
                 id="reg-locality"
                 name="locality"
-                className="form-select"
+                type="text"
+                className="form-input"
+                placeholder={role === 'provider' ? 'Enter any service area, locality, or address' : 'Enter your address, street, locality, or city'}
                 value={formData.locality}
                 onChange={handleChange}
                 required
-              >
-                <option value="Andheri West, Mumbai">Andheri West, Mumbai</option>
-                <option value="Dadar, Mumbai">Dadar, Mumbai</option>
-                <option value="Bandra West, Mumbai">Bandra West, Mumbai</option>
-                <option value="Powai, Mumbai">Powai, Mumbai</option>
-                <option value="Borivali West, Mumbai">Borivali West, Mumbai</option>
-                <option value="Kurla, Mumbai">Kurla, Mumbai</option>
-                <option value="Malad West, Mumbai">Malad West, Mumbai</option>
-              </select>
+              />
             </div>
 
             {/* If Service Provider: Experience & Description */}
