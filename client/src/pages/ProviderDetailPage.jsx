@@ -236,7 +236,7 @@ export default function ProviderDetailPage() {
         <div className="card" style={{ maxWidth: '500px', margin: '0 auto' }}>
           <h2>Profile Not Found</h2>
           <p style={{ color: 'var(--text-muted)' }}>
-            The requested service provider profile could not be located in Mumbai.
+            The requested service provider profile could not be located.
           </p>
           <Link to="/providers" className="btn btn-primary" style={{ marginTop: '16px' }}>
             ← Back to Providers
@@ -353,7 +353,7 @@ export default function ProviderDetailPage() {
 
                   <div className="form-group">
                     <label className="form-label" htmlFor="customer-loc">
-                      Your Mumbai Locality
+                      Your Service Address / Locality
                     </label>
                     <input
                       id="customer-loc"
@@ -361,7 +361,7 @@ export default function ProviderDetailPage() {
                       className="form-input"
                       value={customerLocality}
                       onChange={(e) => setCustomerLocality(e.target.value)}
-                      placeholder="e.g. Andheri West, Mumbai"
+                      placeholder="Enter your address, street, or locality"
                       required
                     />
                   </div>

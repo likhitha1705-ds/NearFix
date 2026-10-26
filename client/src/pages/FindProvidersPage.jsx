@@ -181,7 +181,7 @@ export default function FindProvidersPage() {
       <div className="container">
         {/* Page Header */}
         <div className="page-header">
-          <h1>Find Local Service Providers</h1>
+          <h1>Find the local service provider</h1>
           <p>
             Connect with verified professionals for fast, dependable home repairs.
           </p>

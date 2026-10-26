@@ -61,7 +61,7 @@ export default function CustomerDashboard() {
             <span className="badge badge-city">Customer Account</span>
             <h1>Welcome back, {user?.full_name}!</h1>
             <p className="welcome-sub">
-              📍 Locality: <strong>{user?.locality || 'Andheri West'}</strong> • Email: {user?.email}
+              📍 Address: <strong>{user?.locality || 'Not specified'}</strong> • Email: {user?.email}
             </p>
           </div>
           <div className="welcome-actions">

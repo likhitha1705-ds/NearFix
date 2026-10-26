@@ -12,7 +12,7 @@ export default function ServiceCard({ category }) {
       <h3 className="service-title">{name}</h3>
       <p className="service-desc">{description}</p>
       <div className="service-footer">
-        <span className="service-coverage">📍 Mumbai, MH</span>
+        <span className="service-coverage">📍 Verified Service</span>
         <Link to={`/providers?service=${encodeURIComponent(name)}`} className="btn btn-primary btn-sm service-btn">
           Find Providers →
         </Link>

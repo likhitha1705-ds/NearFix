@@ -71,7 +71,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container hero-container">
-          <h1 className="hero-title">Find Trusted Local Services in Mumbai</h1>
+          <h1 className="hero-title">Find the local service provider</h1>
           <p className="hero-subtitle">
             NearFix connects you with trusted local repair professionals for quick, dependable home maintenance.
           </p>
@@ -106,7 +106,7 @@ export default function HomePage() {
                   id="location-input"
                   type="text"
                   className="form-input search-input"
-                  placeholder="e.g. Andheri West, Dadar, Bandra West"
+                  placeholder="Enter your area, locality, or street"
                   value={locality}
                   onChange={(e) => setLocality(e.target.value)}
                 />
@@ -120,36 +120,33 @@ export default function HomePage() {
           </div>
 
           <div className="quick-tags">
-            <span className="quick-tag-label">Popular Localities:</span>
+            <span className="quick-tag-label">Popular Services:</span>
             <button
               type="button"
               className="quick-tag-btn"
               onClick={() => {
-                setLocality('Andheri West');
-                navigate('/providers?locality=Andheri+West');
+                navigate('/providers?service=Electrician');
               }}
             >
-              Andheri West
+              ⚡ Electrician
             </button>
             <button
               type="button"
               className="quick-tag-btn"
               onClick={() => {
-                setLocality('Dadar');
-                navigate('/providers?locality=Dadar');
+                navigate('/providers?service=Plumber');
               }}
             >
-              Dadar
+              🔧 Plumber
             </button>
             <button
               type="button"
               className="quick-tag-btn"
               onClick={() => {
-                setLocality('Bandra West');
-                navigate('/providers?locality=Bandra+West');
+                navigate('/providers?service=AC+Repair');
               }}
             >
-              Bandra West
+              ❄️ AC Repair
             </button>
           </div>
         </div>
